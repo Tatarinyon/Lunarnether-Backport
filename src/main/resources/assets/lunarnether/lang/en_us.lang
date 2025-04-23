@@ -1,0 +1,19 @@
+# Blocks
+tile.lunar_stone.name=Lunar Stone
+tile.smooth_lunar_stone.name=Smooth Lunar Stone
+tile.polished_lunar_stone.name=Polished Lunar Stone
+tile.cut_polished_lunar_stone.name=Cut Polished Lunar Stone
+tile.lunar_dust.name=Lunar Dust
+tile.astraith.name=Astraith
+tile.ilmenite_ore.name=Ilmenite Ore
+tile.raw_ilmenite_block.name=Raw Ilmenite Block
+tile.titanium_block.name=Titanium Block
+tile.chiseled_titanium.name=Chiseled Titanium
+tile.titanium_grate.name=Titanium Grate
+tile.titanium_door_bottom.name=Titanium Door Bottom
+tile.titanium_door_top.name=Titanium Door Top
+tile.titanium_trapdoor.name=Titanium Trapdoor
+tile.cut_titanium.name=Cut Titanium
+
+# Creative Tab
+itemGroup.lunarnether=Lunar Nether

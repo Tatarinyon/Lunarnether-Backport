@@ -1,0 +1,11 @@
+{
+    "required": true,
+    "package": "com.lunarnether.mixin",
+    "refmap": "lunarnether.refmap.json",
+    "compatibilityLevel": "JAVA_8",
+    "mixins": [
+        "NetherGenMixin"
+    ],
+    "client": [],
+    "server": []
+}
