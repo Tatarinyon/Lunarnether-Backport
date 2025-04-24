@@ -1,0 +1,11 @@
+{
+  "ambient.nether_high": {
+    "category": "ambient",
+    "sounds": [
+      {
+        "name": "lunarnether:ambient/nether_high",
+        "stream": true
+      }
+    ]
+  }
+}
