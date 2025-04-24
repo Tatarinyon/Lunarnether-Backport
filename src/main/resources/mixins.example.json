@@ -7,6 +7,6 @@
     "mixins": [
         "NetherGenMixin"
     ],
-    "client": [],
+    "client": ["NetherFogMixin"],
     "server": []
 }
