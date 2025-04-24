@@ -30,7 +30,7 @@ public class ModBlocks {
     public static Block polishedLunarStone;
     public static Block cutPolishedLunarStone;
     public static Block lunarDust;
-    public static Block astralith;
+    public static Block astralrock;
     public static Block ilmeniteOre;
     public static Block rawIlmeniteBlock;
     public static Block titaniumBlock;
@@ -44,7 +44,7 @@ public class ModBlocks {
         polishedLunarStone = registerBlock(new BaseBlock("polished_lunar_stone", Material.ROCK, 1.5F, 10.0F, "pickaxe", 1, SoundType.STONE));
         cutPolishedLunarStone = registerBlock(new BaseBlock("cut_polished_lunar_stone", Material.ROCK, 1.5F, 10.0F, "pickaxe", 1, SoundType.STONE));
         lunarDust = registerBlock(new BaseBlock("lunar_dust", Material.SAND, 0.5F, 2.5F, "shovel", 0, SoundType.SAND));
-        astralith = registerBlock(new BaseBlock("astralith", Material.ROCK, 3.0F, 15.0F, "pickaxe", 2, SoundType.STONE));
+        astralrock = registerBlock(new BaseBlock("astral_rock", Material.ROCK, 3.0F, 15.0F, "pickaxe", 2, SoundType.STONE));
         ilmeniteOre = registerBlock(new BaseBlock("ilmenite_ore", Material.ROCK, 3.0F, 15.0F, "pickaxe", 2, SoundType.STONE));
         rawIlmeniteBlock = registerBlock(new BaseBlock("raw_ilmenite_block", Material.ROCK, 5.0F, 30.0F, "pickaxe", 2, SoundType.STONE));
         titaniumBlock = registerBlock(new BaseBlock("titanium_block", Material.IRON, 5.0F, 30.0F, "pickaxe", 2, SoundType.METAL));

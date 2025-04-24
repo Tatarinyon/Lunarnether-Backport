@@ -80,19 +80,25 @@ processResources {
 
 sourceSets {
     main {
-        refMap = mod_mixin_refmap.replace('${mod_id}', mod_id)
+        ext.refMap = "refmap.lunarnether.json"
     }
 }
 
+
 mixin {
-    config mod_mixin_configs.replace('${mod_id}', mod_id)
+    config "mixins.example.json"
 }
+
 
 jar {
     from {
         configurations.embed.collect { it.isDirectory() ? it : zipTree(it) }
     } {
         exclude 'LICENSE.txt', 'META-INF/MANIFSET.MF', 'META-INF/maven/**', 'META-INF/*.RSA', 'META-INF/*.SF'
+    }
+
+    from("build/resources/main") {
+        include "${mod_id}.refmap.json" // ← REF MAP DOSYASI BURAYA DAHİL EDİLİYOR
     }
 
     manifest.attributes(
@@ -102,5 +108,6 @@ jar {
             'TweakOrder': '0'
     )
 }
+
 
 jar.finalizedBy('reobfJar')

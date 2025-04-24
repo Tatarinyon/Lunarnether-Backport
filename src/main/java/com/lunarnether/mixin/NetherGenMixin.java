@@ -25,8 +25,9 @@ public class NetherGenMixin {
 
     @Inject(method = "prepareHeights", at = @At("RETURN"))
     private void generateGrassTerrain(int chunkX, int chunkZ, ChunkPrimer primer, CallbackInfo ci) {
-        IBlockState grass = Blocks.GRASS.getDefaultState();
-        IBlockState dirt  = Blocks.DIRT.getDefaultState();
+        // Özel blokları tanımlıyoruz - doğru değişken adlarıyla
+        IBlockState lunarDust = ModBlocks.lunarDust.getDefaultState();
+        IBlockState lunarStone = ModBlocks.lunarStone.getDefaultState();
 
         int baseX = chunkX * 16;
         int baseZ = chunkZ * 16;
@@ -93,7 +94,7 @@ public class NetherGenMixin {
                 for (int y = TERRAIN_MIN_HEIGHT; y <= FLAT_TERRAIN_HEIGHT; y++) {
                     IBlockState currentBlock = primer.getBlockState(x, y, z);
                     if (currentBlock.getBlock() == Blocks.AIR) {
-                        primer.setBlockState(x, y, z, dirt);
+                        primer.setBlockState(x, y, z, lunarStone);
                     }
                 }
 
@@ -121,9 +122,9 @@ public class NetherGenMixin {
                         IBlockState currentBlock = primer.getBlockState(x, y, z);
                         if (currentBlock.getBlock() == Blocks.AIR) {
                             if (y == finalHeight) {
-                                primer.setBlockState(x, y, z, grass); // En üst çim
+                                primer.setBlockState(x, y, z, lunarDust); // En üst Lunar Dust
                             } else {
-                                primer.setBlockState(x, y, z, dirt); // İçerisi toprak
+                                primer.setBlockState(x, y, z, lunarStone); // İçerisi Lunar Stone
                             }
                         }
                     }
@@ -134,9 +135,9 @@ public class NetherGenMixin {
                     }
                 }
 
-                // 140 seviyesindeki (düz arazi üstündeki) blokları çim yap
+                // 140 seviyesindeki (düz arazi üstündeki) blokları Lunar Dust yap
                 if (finalHeight == FLAT_TERRAIN_HEIGHT) {
-                    primer.setBlockState(x, finalHeight, z, grass);
+                    primer.setBlockState(x, finalHeight, z, lunarDust);
                 }
             }
         }
@@ -147,7 +148,7 @@ public class NetherGenMixin {
             for (int z = 0; z < 16; z++) {
                 for (int y = TERRAIN_MIN_HEIGHT + 1; y < MAX_HEIGHT; y++) {
                     IBlockState current = primer.getBlockState(x, y, z);
-                    if (current.getBlock() == Blocks.GRASS || current.getBlock() == Blocks.DIRT) {
+                    if (current.getBlock() == ModBlocks.lunarDust || current.getBlock() == ModBlocks.lunarStone) {
                         IBlockState below = primer.getBlockState(x, y - 1, z);
                         if (below.getBlock() == Blocks.AIR) {
                             // Altında hava olan bir blok var, komşularını kontrol et
@@ -181,22 +182,22 @@ public class NetherGenMixin {
 
                         // Çok sayıda komşu blok varsa ve muhtemelen bir çukurdaysa, blokla doldur
                         if (solidNeighbors >= 3 && y < FLAT_TERRAIN_HEIGHT) {
-                            primer.setBlockState(x, y, z, dirt);
+                            primer.setBlockState(x, y, z, lunarStone);
                         }
                     }
                 }
             }
         }
 
-        // Üstteki çim bloklarını son bir kez düzelt
+        // Üstteki blokları son bir kez düzelt
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 for (int y = TERRAIN_MIN_HEIGHT + 1; y < MAX_HEIGHT; y++) {
                     IBlockState current = primer.getBlockState(x, y, z);
-                    if (current.getBlock() == Blocks.DIRT) {
+                    if (current.getBlock() == ModBlocks.lunarStone) {
                         IBlockState above = y < MAX_HEIGHT - 1 ? primer.getBlockState(x, y + 1, z) : null;
                         if (above != null && above.getBlock() == Blocks.AIR) {
-                            primer.setBlockState(x, y, z, grass); // Üstü açık olan toprak bloklarını çime çevir
+                            primer.setBlockState(x, y, z, lunarDust); // Üstü açık olan Lunar Stone bloklarını Lunar Dust'a çevir
                         }
                     }
                 }
