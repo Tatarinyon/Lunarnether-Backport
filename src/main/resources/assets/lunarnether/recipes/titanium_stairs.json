@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": { "item": "lunarnether:titanium_block" }
+  },
+  "result": {
+    "item": "lunarnether:titanium_stairs",
+    "count": 4
+  }
+}

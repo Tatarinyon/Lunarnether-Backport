@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": { "item": "lunarnether:lunar_stone" }
+  },
+  "result": {
+    "item": "lunarnether:lunar_stone_slab",
+    "count": 6
+  }
+}

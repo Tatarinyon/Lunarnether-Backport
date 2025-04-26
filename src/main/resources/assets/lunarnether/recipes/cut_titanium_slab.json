@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": { "item": "lunarnether:cut_titanium" }
+  },
+  "result": {
+    "item": "lunarnether:cut_titanium_slab",
+    "count": 6
+  }
+}
