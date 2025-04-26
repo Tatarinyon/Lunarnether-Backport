@@ -2,13 +2,13 @@
 {
   "modid": "${mod_id}",
   "name": "${mod_name}",
-  "description": "${mod_description}",
+  "description": "this is a backport mod of lunar nether 1.20",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ${mod_author},
-  "credits": "",
+  "authorList": "Made by Arduino Ali ",
+  "credits": "Helper: RedstoneProff",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

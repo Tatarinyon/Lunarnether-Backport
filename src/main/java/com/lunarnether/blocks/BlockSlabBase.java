@@ -1,6 +1,5 @@
 package com.lunarnether.blocks;
 
-import com.lunarnether.Main;
 import com.lunarnether.tabs.CreativeTabLunarNether;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;

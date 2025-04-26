@@ -23,11 +23,22 @@ public class NetherGenMixin {
     private static final double PERLIN_SCALE = 0.25; // Daha yumuşak tepeler için daha düşük değer
     private static final double PERLIN_AMPLITUDE = 0.25; // Biraz daha yüksek tepeler için artırıldı
 
+    // Krater parametreleri
+    private static final double CRATER_CHANCE = 0.007; // Her blok için krater oluşma şansı
+    private static final int MIN_CRATER_RADIUS = 3; // En küçük krater yarıçapı
+    private static final int MAX_CRATER_RADIUS = 12; // En büyük krater yarıçapı
+    private static final double ILMENITE_CHANCE = 0.3; // Kraterlerde ilmenite oluşma şansı
+    private static final double ILMENITE_VEIN_CHANCE = 0.05; // Normal arazide ilmenite damarı oluşma şansı
+
+    // Yeni üretilen Random nesnesi
+    private static final Random randomGenerator = new Random(WORLD_SEED);
+
     @Inject(method = "prepareHeights", at = @At("RETURN"))
     private void generateGrassTerrain(int chunkX, int chunkZ, ChunkPrimer primer, CallbackInfo ci) {
         // Özel blokları tanımlıyoruz - doğru değişken adlarıyla
         IBlockState lunarDust = ModBlocks.lunarDust.getDefaultState();
         IBlockState lunarStone = ModBlocks.lunarStone.getDefaultState();
+        IBlockState ilmeniteOre = ModBlocks.ilmeniteOre.getDefaultState();
 
         int baseX = chunkX * 16;
         int baseZ = chunkZ * 16;
@@ -66,7 +77,7 @@ public class NetherGenMixin {
                             int ni = i + dx, nj = j + dz;
                             if (ni >= 0 && ni < gridSize && nj >= 0 && nj < gridSize) {
                                 // Yumuşatılmış ağırlık fonksiyonu
-                                double dist = Math.sqrt(dx*dx + dz*dz);
+                                double dist = Math.sqrt(dx * dx + dz * dz);
                                 double weight = 1.0 / (dist + 1);
                                 sum += noiseGrid[ni][nj] * weight;
                                 weightSum += weight;
@@ -200,6 +211,254 @@ public class NetherGenMixin {
                             primer.setBlockState(x, y, z, lunarDust); // Üstü açık olan Lunar Stone bloklarını Lunar Dust'a çevir
                         }
                     }
+                }
+            }
+        }
+
+        // İlmenite cevheri damarları oluştur (normal arazide)
+        generateIlmeniteVeins(primer, randomGenerator, ilmeniteOre, lunarStone);
+
+        // Krater oluşturma işlemi
+        generateCratersWithIlmenite(chunkX, chunkZ, primer, randomGenerator, ilmeniteOre, lunarDust, lunarStone);
+    }
+
+    /**
+     * Krater oluşturma fonksiyonu
+     */
+    private void generateCratersWithIlmenite(int chunkX, int chunkZ, ChunkPrimer primer, Random random,
+                                             IBlockState ilmeniteOre, IBlockState lunarDust, IBlockState lunarStone) {
+        int baseX = chunkX * 16;
+        int baseZ = chunkZ * 16;
+
+        // Chunk başına test edilecek potansiyel krater noktası sayısını azaltalım
+        int craterCenters = 2; // 5'ten 2'ye düşürüldü
+
+        for (int i = 0; i < craterCenters; i++) {
+            // Chunk içinde rastgele bir nokta seç
+            int centerX = random.nextInt(16);
+            int centerZ = random.nextInt(16);
+
+            // Krater oluşturma şansını düşürelim
+            if (random.nextDouble() < CRATER_CHANCE * 0.5) { // Şansı yarıya indirdik
+                // Krater yarıçapını sınırlayalım
+                int radius = MIN_CRATER_RADIUS + random.nextInt(MAX_CRATER_RADIUS - MIN_CRATER_RADIUS);
+                // Çok büyük kraterleri önlemek için radius'u sınırla
+                radius = Math.min(radius, 8); // Max 8 radius olacak şekilde sınırlandırıldı
+
+                // Krater derinliğini sınırla
+                int depth = Math.max(2, radius / 3); // Depth daha az olacak
+                depth = Math.min(depth, 5); // Max 5 derinlik
+
+                // Krater merkezinin Y pozisyonunu bul
+                int centerY = findSurfaceHeight(primer, centerX, centerZ);
+                if (centerY < FLAT_TERRAIN_HEIGHT) {
+                    centerY = FLAT_TERRAIN_HEIGHT; // Minimum yükseklik
+                }
+
+                // Radius'u kontrol et - eğer çok büyükse atlayalım
+                if (radius > 8) {
+                    continue;
+                }
+
+                // Krater oluştur
+                for (int x = -radius; x <= radius; x++) {
+                    for (int z = -radius; z <= radius; z++) {
+                        // Nokta krater çemberinin içinde mi?
+                        double distance = Math.sqrt(x * x + z * z);
+                        if (distance <= radius) {
+                            // Chunk sınırları içinde mi kontrol et
+                            int worldX = centerX + x;
+                            int worldZ = centerZ + z;
+
+                            if (worldX >= 0 && worldX < 16 && worldZ >= 0 && worldZ < 16) {
+                                // Krater derinliğini hesapla - kenarlardan merkeze doğru derinleşir
+                                double depthFactor = 1.0 - (distance / radius);
+                                int craterDepth = (int) Math.round(depth * depthFactor * depthFactor);
+
+                                // Krater içindeki derinliği uygula
+                                for (int y = 0; y <= craterDepth; y++) {
+                                    int targetY = centerY - y;
+                                    if (targetY >= TERRAIN_MIN_HEIGHT && targetY < MAX_HEIGHT) {
+                                        try {
+                                            primer.setBlockState(worldX, targetY, worldZ, Blocks.AIR.getDefaultState());
+                                        } catch (IndexOutOfBoundsException e) {
+                                            // Koordinat sınırları dışındaysa atla
+                                            continue;
+                                        }
+                                    }
+                                }
+
+                                // Krater kenarlarını oluştur (rim) - boyutu sınırla
+                                if (distance > radius * 10.0 && distance <= radius) {
+                                    double rimHeight = (radius - distance) / (radius * 0.2);
+                                    // Yüksekliği sınırlandır
+                                    rimHeight = Math.min(rimHeight, 1.5); // En fazla 1.5 kat
+                                    int rimBlocks = (int) Math.ceil(rimHeight);
+                                    rimBlocks = Math.min(rimBlocks, 2); // En fazla 2 blok yükseklik
+
+                                    for (int y = 1; y <= rimBlocks; y++) {
+                                        int targetY = centerY + y;
+                                        if (targetY >= TERRAIN_MIN_HEIGHT && targetY < MAX_HEIGHT) {
+                                            try {
+                                                if (y == rimBlocks) {
+                                                    primer.setBlockState(worldX, targetY, worldZ, lunarDust);
+                                                } else {
+                                                    primer.setBlockState(worldX, targetY, worldZ, lunarStone);
+                                                }
+                                            } catch (IndexOutOfBoundsException e) {
+                                                // Koordinat sınırları dışındaysa atla
+                                                continue;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // Krater tabanını oluştur ve İlmenite yerleştir
+                                int baseY = centerY - craterDepth;
+                                if (baseY >= TERRAIN_MIN_HEIGHT && baseY < MAX_HEIGHT) {
+                                    try {
+                                        // Krater tabanına LunarDust yerleştir
+                                        primer.setBlockState(worldX, baseY, worldZ, lunarDust);
+
+                                        // Crater içinde İlmenite cevheri oluşturma şansı
+                                        if (random.nextDouble() < ILMENITE_CHANCE) {
+                                            // İlmenite cevheri yerleştir, bazıları yüzeyde, bazıları gömülü olsun
+                                            if (random.nextDouble() < 0.5) {
+                                                // Yüzeyde
+                                                primer.setBlockState(worldX, baseY, worldZ, ilmeniteOre);
+                                            } else if (baseY - 1 >= TERRAIN_MIN_HEIGHT) {
+                                                // Gömülü, sadece 1 blok derinlikte (daha derine gitme)
+                                                primer.setBlockState(worldX, baseY - 1, worldZ, ilmeniteOre);
+                                            }
+                                        }
+                                    } catch (IndexOutOfBoundsException e) {
+                                        // Koordinat sınırları dışındaysa atla
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Yüzey yüksekliğini bulma yardımcı fonksiyonu - sınır kontrolleriyle
+     */
+    private int findSurfaceHeight(ChunkPrimer primer, int x, int z) {
+        // Koordinatları kontrol et
+        if (x < 0 || x >= 16 || z < 0 || z >= 16) {
+            return FLAT_TERRAIN_HEIGHT; // Sınırlar dışındaysa varsayılan yükseklik döndür
+        }
+
+        for (int y = MAX_HEIGHT - 1; y >= TERRAIN_MIN_HEIGHT; y--) {
+            try {
+                IBlockState state = primer.getBlockState(x, y, z);
+                if (state.getBlock() != Blocks.AIR) {
+                    return y;
+                }
+            } catch (IndexOutOfBoundsException e) {
+                // Herhangi bir sınır hatası olursa varsayılan değer döndür
+                return FLAT_TERRAIN_HEIGHT;
+            }
+        }
+        return FLAT_TERRAIN_HEIGHT; // Hiçbir şey bulunamazsa varsayılan düz arazi yüksekliği
+    }
+
+    /**
+     * İlmenite cevheri damarları oluşturma - sınır kontrolleriyle
+     */
+    private void generateIlmeniteVeins(ChunkPrimer primer, Random random, IBlockState ilmeniteOre, IBlockState lunarStone) {
+        // Chunk başına kaç damar oluşturulacağını belirle - sayıyı azalt
+        int veinsPerChunk = 5 + random.nextInt(10); // 2-3 damar (önceki 3-5)
+
+        for (int vein = 0; vein < veinsPerChunk; vein++) {
+            if (random.nextDouble() < ILMENITE_VEIN_CHANCE) {
+                // Damar başlangıç konumu
+                int startX = random.nextInt(16);
+                int startZ = random.nextInt(16);
+                int startY = TERRAIN_MIN_HEIGHT + random.nextInt(FLAT_TERRAIN_HEIGHT - TERRAIN_MIN_HEIGHT);
+
+                // Damar büyüklüğü - daha küçük
+                int veinSize = 10 + random.nextInt(20); // 2-4 blok (önceki 3-7)
+
+                // Damar yönü (rastgele bir yön)
+                double dirX = random.nextDouble() - 0.5;
+                double dirZ = random.nextDouble() - 0.5;
+                double dirY = (random.nextDouble() - 0.5) * 0.5; // Y yönünde daha az değişim
+
+                // Damar yönlendiricisini normalize et
+                double length = Math.sqrt(dirX * dirX + dirZ * dirZ + dirY * dirY);
+                dirX /= length;
+                dirZ /= length;
+                dirY /= length;
+
+                // Damarı oluştur
+                double x = startX;
+                double y = startY;
+                double z = startZ;
+
+                for (int i = 0; i < veinSize; i++) {
+                    int blockX = (int) Math.round(x);
+                    int blockY = (int) Math.round(y);
+                    int blockZ = (int) Math.round(z);
+
+                    // Chunk sınırları içinde kontrol et
+                    if (blockX >= 0 && blockX < 16 && blockZ >= 0 && blockZ < 16 &&
+                            blockY >= TERRAIN_MIN_HEIGHT && blockY < MAX_HEIGHT) {
+
+                        try {
+                            IBlockState currentBlock = primer.getBlockState(blockX, blockY, blockZ);
+                            // Sadece LunarStone'u İlmenite ile değiştir
+                            if (currentBlock.getBlock() == ModBlocks.lunarStone) {
+                                primer.setBlockState(blockX, blockY, blockZ, ilmeniteOre);
+
+                                // Küçük bir küme oluştur (aynı noktada birkaç blok) - küme boyutunu azalt
+                                for (int dx = -1; dx <= 1; dx++) {
+                                    for (int dy = -1; dy <= 1; dy++) {
+                                        for (int dz = -1; dz <= 1; dz++) {
+                                            if ((dx == 0 && dy == 0 && dz == 0) ||
+                                                    Math.abs(dx) + Math.abs(dy) + Math.abs(dz) > 2) {
+                                                continue; // Merkez bloğunu ve uzak köşeleri atla
+                                            }
+
+                                            int nx = blockX + dx;
+                                            int ny = blockY + dy;
+                                            int nz = blockZ + dz;
+
+                                            // Chunk sınırları içinde kontrol et
+                                            if (nx >= 0 && nx < 16 && nz >= 0 && nz < 16 &&
+                                                    ny >= TERRAIN_MIN_HEIGHT && ny < MAX_HEIGHT) {
+
+                                                // Küçük bir şansa göre komşu bloğu da dönüştür - şansı azalt
+                                                if (random.nextDouble() < 0.2) { // 0.3'ten 0.2'ye düşürüldü
+                                                    try {
+                                                        IBlockState neighborBlock = primer.getBlockState(nx, ny, nz);
+                                                        if (neighborBlock.getBlock() == ModBlocks.lunarStone) {
+                                                            primer.setBlockState(nx, ny, nz, ilmeniteOre);
+                                                        }
+                                                    } catch (IndexOutOfBoundsException e) {
+                                                        // Sınır hatası olursa atla
+                                                        continue;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (IndexOutOfBoundsException e) {
+                            // Sınır hatası olursa atla
+                            continue;
+                        }
+                    }
+
+                    // Damarı hafifçe rastgele yönde ilerlet
+                    x += dirX + (random.nextDouble() - 0.5) * 0.3; // Daha az sapma
+                    y += dirY + (random.nextDouble() - 0.5) * 0.3;
+                    z += dirZ + (random.nextDouble() - 0.5) * 0.3;
                 }
             }
         }

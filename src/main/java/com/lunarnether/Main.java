@@ -15,6 +15,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixins;
+import com.lunarnether.blocks.ModBlocks;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(modid = Main.MODID, name = Main.NAME, version = Main.VERSION)
 public class Main {
@@ -64,6 +67,11 @@ public class Main {
         if (event.getSide() == Side.CLIENT) {
             registerClientHandlers();
         }
+        GameRegistry.addSmelting(
+                new ItemStack(ModBlocks.lunarStone, 1),      // Girdi: lunarStone
+                new ItemStack(ModBlocks.smoothLunarStone, 1),  // Çıktı: smoothLunarStone
+                0.7F                                         // XP miktarı
+        );
 
         logger.info(NAME + " init aşamasında yükleniyor.");
     }

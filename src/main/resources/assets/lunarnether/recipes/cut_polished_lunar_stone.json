@@ -1,13 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "###"
+    "##",
+    "##"
   ],
   "key": {
     "#": { "item": "lunarnether:polished_lunar_stone" }
   },
   "result": {
-    "item": "lunarnether:polished_lunar_stone_slab",
-    "count": 6,"data": 0
+    "item": "lunarnether:cut_polished_lunar_stone",
+    "count": 4
   }
 }

@@ -38,6 +38,6 @@ tile.titanium_slab.name=Titanium Slab
 tile.titanium_double_slab.name=Titanium Double Slab
 tile.cut_titanium_slab.name=Cut Titanium Slab
 tile.cut_titanium_double_slab.name=Cut Titanium Double Slab
-
+item.titanium_ingot.name=Titanium Ingot
 # Creative Tab
 itemGroup.lunarnether=Lunar Nether

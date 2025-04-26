@@ -1,10 +1,8 @@
 package com.lunarnether.blocks;
 
-import com.lunarnether.Main;
 import com.lunarnether.tabs.CreativeTabLunarNether;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockWall;
-import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
