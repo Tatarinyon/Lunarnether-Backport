@@ -1,0 +1,8 @@
+{
+  "parent": "block/outer_stairs",
+  "textures": {
+    "bottom": "lunarnether:blocks/titanium",
+    "top": "lunarnether:blocks/titanium",
+    "side": "lunarnether:blocks/titanium"
+  }
+}

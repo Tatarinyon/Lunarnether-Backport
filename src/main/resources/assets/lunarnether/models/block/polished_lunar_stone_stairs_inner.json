@@ -1,0 +1,8 @@
+{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "bottom": "lunarnether:blocks/polished_lunar_stone",
+    "top": "lunarnether:blocks/polished_lunar_stone",
+    "side": "lunarnether:blocks/polished_lunar_stone"
+  }
+}

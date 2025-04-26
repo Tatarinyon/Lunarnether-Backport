@@ -1,0 +1,6 @@
+{
+  "parent": "block/wall_side",
+  "textures": {
+    "wall": "lunarnether:blocks/polished_lunar_stone"
+  }
+}

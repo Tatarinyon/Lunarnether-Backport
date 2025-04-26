@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "variant=default": {
+      "model": "lunarnether:smooth_lunar_stone"
+    }
+  }
+}

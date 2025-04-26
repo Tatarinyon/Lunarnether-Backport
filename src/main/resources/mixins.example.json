@@ -5,8 +5,8 @@
     "refmap": "refmap.lunarnether.json",
     "target": "@env(DEFAULT)",
     "mixins": [
-        "NetherGenMixin"
+        "NetherGenMixin","NetherBedrockReplacerMixin"
     ],
-    "client": ["NetherFogMixin"],
+    "client": ["NetherFogMixin","NetherSoundMixin"],
     "server": []
 }

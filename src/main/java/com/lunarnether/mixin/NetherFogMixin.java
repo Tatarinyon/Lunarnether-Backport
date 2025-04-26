@@ -12,26 +12,29 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntityRenderer.class)
 public class NetherFogMixin {
 
-    /**
-     * Bu mixin, EntityRenderer sınıfındaki setupFog metodunun başında inject yapar.
-     * Eğer oyuncu Nether dünyasında (-1) ve Y koordinatı 127 veya üstündeyse,
-     * OpenGL’deki sis render ayarları (GlStateManager.disableFog() çağrısı)
-     * yapılarak sis tamamen devre dışı bırakılır ve metodun devamı iptal edilir.
-     *
-     * @param fogMode      Sis modu (render ayarlarında kullanılan parametre)
-     * @param partialTicks Kısmi tick zamanı
-     * @param ci           Callback info, metod akışını iptal etmek için kullanılır
-     */
-    @Inject(method = "setupFog", at = @At("HEAD"), cancellable = true)
-    private void removeNetherFog(int fogMode, float partialTicks, CallbackInfo ci) {
+    @Inject(method = "setupFog", at = @At("HEAD"))
+    private void modifyNetherFog(int fogMode, float partialTicks, CallbackInfo ci) {
         Minecraft mc = Minecraft.getMinecraft();
         Entity entity = mc.getRenderViewEntity();
 
         if (entity != null && entity.world.provider.getDimension() == -1 && entity.posY >= 127.0D) {
-            // Nether’da yüksek bölgede olduğumuz için sis efektini kapatıyoruz:
+            // Sisi devre dışı bırak ama metodu iptal etme
             GlStateManager.disableFog();
-            // Metodun geri kalanının çalışmasını iptal ediyoruz
-            ci.cancel();
+            // ci.cancel() satırını kaldırdık - böylece meteod devam edecek
+        }
+    }
+
+    // Alternatif yaklaşım: RETURN noktasında inject yaparak orijinal işlemi yapmasına izin ver
+    // ama sonra sisi tekrar kapat
+    @Inject(method = "setupFog", at = @At("RETURN"))
+    private void ensureNoFogInHighNether(int fogMode, float partialTicks, CallbackInfo ci) {
+        Minecraft mc = Minecraft.getMinecraft();
+        Entity entity = mc.getRenderViewEntity();
+
+        if (entity != null && entity.world.provider.getDimension() == -1 && entity.posY >= 127.0D) {
+            // Metodun sonunda sisi tekrar devre dışı bırak
+            // (eğer metod içinde tekrar aktif edildiyse)
+            GlStateManager.disableFog();
         }
     }
 }

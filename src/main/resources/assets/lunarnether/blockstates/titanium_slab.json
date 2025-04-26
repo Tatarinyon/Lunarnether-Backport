@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=bottom,variant=default": {
+      "model": "lunarnether:titanium_slab"
+    },
+    "half=top,variant=default": {
+      "model": "lunarnether:titanium_slab_top"
+    }
+  }
+}
