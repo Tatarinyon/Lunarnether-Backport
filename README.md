@@ -3,6 +3,7 @@ Lunar Nether Backport is an unofficial port of Lunar Nether by Xbxbxb123.
 
 Curseforge page can be found here.
 https://www.curseforge.com/minecraft/mc-mods/lunar-nether-backport
+Permisiom given for RedstoneProff to publish it on Curseforge.
 
 Adds the Moon, without being a tech mod. The Nether's usual bedrock ceiling is replaced with a new layer of rock hiding an interesting landscape above. Nether Portals work as usual.
 
