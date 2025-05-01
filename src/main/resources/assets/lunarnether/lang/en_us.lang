@@ -5,27 +5,27 @@ tile.polished_lunar_stone.name=Polished Lunar Stone
 tile.cut_polished_lunar_stone.name=Cut Polished Lunar Stone
 tile.lunar_dust.name=Lunar Dust
 tile.astral_rock.name=Astral Rock
-tile.ilmenite_ore.name=Ilmenite Ore
+tile.beryllium_ore.name=Beryllium Ore
 tile.raw_ilmenite_block.name=Raw Ilmenite Block
-tile.titanium_block.name=Titanium Block
-tile.chiseled_titanium.name=Chiseled Titanium
-tile.cut_titanium.name=Cut Titanium
+tile.titanium_block.name=titanium Block
+tile.chiseled_titanium.name=Chiseled titanium
+tile.cut_titanium.name=Cut titanium
 
 # Stairs
 tile.lunar_stone_stairs.name=Lunar Stone Stairs
 tile.smooth_lunar_stone_stairs.name=Smooth Lunar Stone Stairs
 tile.polished_lunar_stone_stairs.name=Polished Lunar Stone Stairs
 tile.cut_polished_lunar_stone_stairs.name=Cut Polished Lunar Stone Stairs
-tile.titanium_stairs.name=Titanium Stairs
-tile.chiseled_titanium_stairs.name=Chiseled Titanium Stairs
-tile.cut_titanium_stairs.name=Cut Titanium Stairs
+tile.titanium_stairs.name=titanium Stairs
+tile.chiseled_titanium_stairs.name=Chiseled titanium Stairs
+tile.cut_titanium_stairs.name=Cut titanium Stairs
 
 # Walls
 tile.lunar_stone_wall.name=Lunar Stone Wall
 tile.smooth_lunar_stone_wall.name=Smooth Lunar Stone Wall
 tile.polished_lunar_stone_wall.name=Polished Lunar Stone Wall
-tile.titanium_wall.name=Titanium Wall
-tile.cut_titanium_wall.name=Cut Titanium Wall
+tile.titanium_wall.name=titanium Wall
+tile.cut_titanium_wall.name=Cut titanium Wall
 
 # Slabs
 tile.lunar_stone_slab.name=Lunar Stone Slab
@@ -34,10 +34,10 @@ tile.smooth_lunar_stone_slab.name=Smooth Lunar Stone Slab
 tile.smooth_lunar_stone_double_slab.name=Smooth Lunar Stone Double Slab
 tile.polished_lunar_stone_slab.name=Polished Lunar Stone Slab
 tile.polished_lunar_stone_double_slab.name=Polished Lunar Stone Double Slab
-tile.titanium_slab.name=Titanium Slab
-tile.titanium_double_slab.name=Titanium Double Slab
-tile.cut_titanium_slab.name=Cut Titanium Slab
-tile.cut_titanium_double_slab.name=Cut Titanium Double Slab
-item.titanium_ingot.name=Titanium Ingot
+tile.titanium_slab.name=titanium Slab
+tile.titanium_double_slab.name=titanium Double Slab
+tile.cut_titanium_slab.name=Cut titanium Slab
+tile.cut_titanium_double_slab.name=Cut titanium Double Slab
+item.beryllium_ingot.name=beryllium Ingot
 # Creative Tab
 itemGroup.lunarnether=Lunar Nether

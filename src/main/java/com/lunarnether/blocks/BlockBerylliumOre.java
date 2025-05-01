@@ -11,9 +11,9 @@ import net.minecraft.util.math.BlockPos;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockIlmeniteOre extends BaseBlock {
+public class BlockBerylliumOre extends BaseBlock {
 
-    public BlockIlmeniteOre(String name, Material material, float hardness, float resistance, String tool, int harvestLevel, SoundType sound) {
+    public BlockBerylliumOre(String name, Material material, float hardness, float resistance, String tool, int harvestLevel, SoundType sound) {
         super(name, material, hardness, resistance, tool, harvestLevel, sound);
     }
 
@@ -21,7 +21,7 @@ public class BlockIlmeniteOre extends BaseBlock {
     @Override
     public List<ItemStack> getDrops(net.minecraft.world.IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         List<ItemStack> drops = new ArrayList<>();
-        drops.add(new ItemStack(ModItems.TITANIUM_INGOT, 1));  // Normal kırma: demir ingot
+        drops.add(new ItemStack(ModItems.BERYLLIUM_INGOT, 1));  // Normal kırma: demir ingot
         return drops;
     }
 }

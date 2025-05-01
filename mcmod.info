@@ -1,0 +1,13 @@
+[
+  {
+    "modid": "lunarnether",
+    "name": "LunarNether backport",
+    "description": "this mod is a backport mod of Lunarnether 1.20",
+    "version": "1.0.0",
+    "mcversion": "1.12.2",
+    "authorList": ["Arduino Ali"],
+    "credits": "my Friend and my helper = RedstoneProff",
+    "screenshots": [],
+    "dependencies": []
+  }
+]

@@ -1,11 +1,7 @@
 package com.lunarnether.blocks;
 
-import com.lunarnether.Main;
-import com.lunarnether.tabs.CreativeTabLunarNether;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
-import net.minecraft.block.BlockStairs;
-import net.minecraft.block.BlockWall;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.SoundType;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -36,11 +32,10 @@ public class ModBlocks {
     public static Block cutPolishedLunarStone;
     public static Block lunarDust;
     public static Block astralrock;
-    public static Block ilmeniteOre;
-    public static Block rawIlmeniteBlock;
+    public static Block berylliumOre;
     public static Block titaniumBlock;
-    public static Block chiseledTitanium;
-    public static Block cutTitanium;
+    public static Block chiseledtitanium;
+    public static Block cuttitanium;
 
     // Yeni merdiven blokları
     public static Block lunarStoneStairs;
@@ -48,15 +43,15 @@ public class ModBlocks {
     public static Block polishedLunarStoneStairs;
     public static Block cutPolishedLunarStoneStairs;
     public static Block titaniumStairs;
-    public static Block chiseledTitaniumStairs;
-    public static Block cutTitaniumStairs;
+    public static Block chiseledtitaniumStairs;
+    public static Block cuttitaniumStairs;
 
     // Yeni duvar blokları
     public static Block lunarStoneWall;
     public static Block smoothLunarStoneWall;
     public static Block polishedLunarStoneWall;
     public static Block titaniumWall;
-    public static Block cutTitaniumWall;
+    public static Block cuttitaniumWall;
 
     // Yeni slab blokları
     public static BlockSlab lunarStoneSlab;
@@ -67,8 +62,8 @@ public class ModBlocks {
     public static BlockSlab polishedLunarStoneDoubleSlab;
     public static BlockSlab titaniumSlab;
     public static BlockSlab titaniumDoubleSlab;
-    public static BlockSlab cutTitaniumSlab;
-    public static BlockSlab cutTitaniumDoubleSlab;
+    public static BlockSlab cuttitaniumSlab;
+    public static BlockSlab cuttitaniumDoubleSlab;
 
     public static void init() {
         // Create all blocks
@@ -78,11 +73,10 @@ public class ModBlocks {
         cutPolishedLunarStone = registerBlock(new BaseBlock("cut_polished_lunar_stone", Material.ROCK, 1.5F, 10.0F, "pickaxe", 1, SoundType.STONE));
         lunarDust = registerBlock(new BaseBlock("lunar_dust", Material.SAND, 0.5F, 2.5F, "shovel", 0, SoundType.SAND));
         astralrock = registerBlock(new BaseBlock("astral_rock", Material.ROCK, 15.0F, 15.0F, "pickaxe", 2, SoundType.STONE));
-        ilmeniteOre = registerBlock(new BlockIlmeniteOre("ilmenite_ore", Material.ROCK, 3.0F, 15.0F, "pickaxe", 2, SoundType.STONE));
-        rawIlmeniteBlock = registerBlock(new BaseBlock("raw_ilmenite_block", Material.ROCK, 5.0F, 30.0F, "pickaxe", 2, SoundType.STONE));
+        berylliumOre = registerBlock(new BlockBerylliumOre("beryllium_ore", Material.ROCK, 3.0F, 15.0F, "pickaxe", 2, SoundType.STONE));
         titaniumBlock = registerBlock(new BaseBlock("titanium_block", Material.IRON, 5.0F, 30.0F, "pickaxe", 2, SoundType.METAL));
-        chiseledTitanium = registerBlock(new BaseBlock("chiseled_titanium", Material.IRON, 5.0F, 30.0F, "pickaxe", 2, SoundType.METAL));
-        cutTitanium = registerBlock(new BaseBlock("cut_titanium", Material.IRON, 5.0F, 30.0F, "pickaxe", 2, SoundType.METAL));
+        chiseledtitanium = registerBlock(new BaseBlock("chiseled_titanium", Material.IRON, 5.0F, 30.0F, "pickaxe", 2, SoundType.METAL));
+        cuttitanium = registerBlock(new BaseBlock("cut_titanium", Material.IRON, 5.0F, 30.0F, "pickaxe", 2, SoundType.METAL));
 
         // Merdiven blokları oluşturma
         lunarStoneStairs = registerBlock(new BlockStairsBase(lunarStone.getDefaultState(), "lunar_stone_stairs"));
@@ -90,15 +84,15 @@ public class ModBlocks {
         polishedLunarStoneStairs = registerBlock(new BlockStairsBase(polishedLunarStone.getDefaultState(), "polished_lunar_stone_stairs"));
         cutPolishedLunarStoneStairs = registerBlock(new BlockStairsBase(cutPolishedLunarStone.getDefaultState(), "cut_polished_lunar_stone_stairs"));
         titaniumStairs = registerBlock(new BlockStairsBase(titaniumBlock.getDefaultState(), "titanium_stairs"));
-        chiseledTitaniumStairs = registerBlock(new BlockStairsBase(chiseledTitanium.getDefaultState(), "chiseled_titanium_stairs"));
-        cutTitaniumStairs = registerBlock(new BlockStairsBase(cutTitanium.getDefaultState(), "cut_titanium_stairs"));
+        chiseledtitaniumStairs = registerBlock(new BlockStairsBase(chiseledtitanium.getDefaultState(), "chiseled_titanium_stairs"));
+        cuttitaniumStairs = registerBlock(new BlockStairsBase(cuttitanium.getDefaultState(), "cut_titanium_stairs"));
 
         // Duvar blokları oluşturma
         lunarStoneWall = registerBlock(new BlockWallBase(lunarStone, "lunar_stone_wall"));
         smoothLunarStoneWall = registerBlock(new BlockWallBase(smoothLunarStone, "smooth_lunar_stone_wall"));
         polishedLunarStoneWall = registerBlock(new BlockWallBase(polishedLunarStone, "polished_lunar_stone_wall"));
         titaniumWall = registerBlock(new BlockWallBase(titaniumBlock, "titanium_wall"));
-        cutTitaniumWall = registerBlock(new BlockWallBase(cutTitanium, "cut_titanium_wall"));
+        cuttitaniumWall = registerBlock(new BlockWallBase(cuttitanium, "cut_titanium_wall"));
 
         // Slab blokları oluşturma
         lunarStoneSlab = registerBlock(new BlockSlabBase.Half("lunar_stone_slab", Material.ROCK, SoundType.STONE, 1.5F, 10.0F, "pickaxe", 1));
@@ -113,8 +107,8 @@ public class ModBlocks {
         titaniumSlab = registerBlock(new BlockSlabBase.Half("titanium_slab", Material.IRON, SoundType.METAL, 5.0F, 30.0F, "pickaxe", 2));
         titaniumDoubleSlab = registerBlock(new BlockSlabBase.Double("titanium_double_slab", Material.IRON, SoundType.METAL, 5.0F, 30.0F, "pickaxe", 2));
 
-        cutTitaniumSlab = registerBlock(new BlockSlabBase.Half("cut_titanium_slab", Material.IRON, SoundType.METAL, 5.0F, 30.0F, "pickaxe", 2));
-        cutTitaniumDoubleSlab = registerBlock(new BlockSlabBase.Double("cut_titanium_double_slab", Material.IRON, SoundType.METAL, 5.0F, 30.0F, "pickaxe", 2));
+        cuttitaniumSlab = registerBlock(new BlockSlabBase.Half("cut_titanium_slab", Material.IRON, SoundType.METAL, 5.0F, 30.0F, "pickaxe", 2));
+        cuttitaniumDoubleSlab = registerBlock(new BlockSlabBase.Double("cut_titanium_double_slab", Material.IRON, SoundType.METAL, 5.0F, 30.0F, "pickaxe", 2));
     }
 
 

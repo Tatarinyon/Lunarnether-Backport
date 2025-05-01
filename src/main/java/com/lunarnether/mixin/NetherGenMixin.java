@@ -27,8 +27,8 @@ public class NetherGenMixin {
     private static final double CRATER_CHANCE = 0.007; // Her blok için krater oluşma şansı
     private static final int MIN_CRATER_RADIUS = 3; // En küçük krater yarıçapı
     private static final int MAX_CRATER_RADIUS = 12; // En büyük krater yarıçapı
-    private static final double ILMENITE_CHANCE = 0.3; // Kraterlerde ilmenite oluşma şansı
-    private static final double ILMENITE_VEIN_CHANCE = 0.05; // Normal arazide ilmenite damarı oluşma şansı
+    private static final double beryllium_CHANCE = 0.3; // Kraterlerde beryllium oluşma şansı
+    private static final double beryllium_VEIN_CHANCE = 0.05; // Normal arazide beryllium damarı oluşma şansı
 
     // Yeni üretilen Random nesnesi
     private static final Random randomGenerator = new Random(WORLD_SEED);
@@ -38,7 +38,7 @@ public class NetherGenMixin {
         // Özel blokları tanımlıyoruz - doğru değişken adlarıyla
         IBlockState lunarDust = ModBlocks.lunarDust.getDefaultState();
         IBlockState lunarStone = ModBlocks.lunarStone.getDefaultState();
-        IBlockState ilmeniteOre = ModBlocks.ilmeniteOre.getDefaultState();
+        IBlockState berylliumOre = ModBlocks.berylliumOre.getDefaultState();
 
         int baseX = chunkX * 16;
         int baseZ = chunkZ * 16;
@@ -215,18 +215,18 @@ public class NetherGenMixin {
             }
         }
 
-        // İlmenite cevheri damarları oluştur (normal arazide)
-        generateIlmeniteVeins(primer, randomGenerator, ilmeniteOre, lunarStone);
+        // beryllium cevheri damarları oluştur (normal arazide)
+        generateberylliumVeins(primer, randomGenerator, berylliumOre, lunarStone);
 
         // Krater oluşturma işlemi
-        generateCratersWithIlmenite(chunkX, chunkZ, primer, randomGenerator, ilmeniteOre, lunarDust, lunarStone);
+        generateCratersWithberyllium(chunkX, chunkZ, primer, randomGenerator, berylliumOre, lunarDust, lunarStone);
     }
 
     /**
      * Krater oluşturma fonksiyonu
      */
-    private void generateCratersWithIlmenite(int chunkX, int chunkZ, ChunkPrimer primer, Random random,
-                                             IBlockState ilmeniteOre, IBlockState lunarDust, IBlockState lunarStone) {
+    private void generateCratersWithberyllium(int chunkX, int chunkZ, ChunkPrimer primer, Random random,
+                                             IBlockState berylliumOre, IBlockState lunarDust, IBlockState lunarStone) {
         int baseX = chunkX * 16;
         int baseZ = chunkZ * 16;
 
@@ -313,22 +313,22 @@ public class NetherGenMixin {
                                     }
                                 }
 
-                                // Krater tabanını oluştur ve İlmenite yerleştir
+                                // Krater tabanını oluştur ve beryllium yerleştir
                                 int baseY = centerY - craterDepth;
                                 if (baseY >= TERRAIN_MIN_HEIGHT && baseY < MAX_HEIGHT) {
                                     try {
                                         // Krater tabanına LunarDust yerleştir
                                         primer.setBlockState(worldX, baseY, worldZ, lunarDust);
 
-                                        // Crater içinde İlmenite cevheri oluşturma şansı
-                                        if (random.nextDouble() < ILMENITE_CHANCE) {
-                                            // İlmenite cevheri yerleştir, bazıları yüzeyde, bazıları gömülü olsun
+                                        // Crater içinde beryllium cevheri oluşturma şansı
+                                        if (random.nextDouble() < beryllium_CHANCE) {
+                                            // beryllium cevheri yerleştir, bazıları yüzeyde, bazıları gömülü olsun
                                             if (random.nextDouble() < 0.5) {
                                                 // Yüzeyde
-                                                primer.setBlockState(worldX, baseY, worldZ, ilmeniteOre);
+                                                primer.setBlockState(worldX, baseY, worldZ, berylliumOre);
                                             } else if (baseY - 1 >= TERRAIN_MIN_HEIGHT) {
                                                 // Gömülü, sadece 1 blok derinlikte (daha derine gitme)
-                                                primer.setBlockState(worldX, baseY - 1, worldZ, ilmeniteOre);
+                                                primer.setBlockState(worldX, baseY - 1, worldZ, berylliumOre);
                                             }
                                         }
                                     } catch (IndexOutOfBoundsException e) {
@@ -368,14 +368,14 @@ public class NetherGenMixin {
     }
 
     /**
-     * İlmenite cevheri damarları oluşturma - sınır kontrolleriyle
+     * beryllium cevheri damarları oluşturma - sınır kontrolleriyle
      */
-    private void generateIlmeniteVeins(ChunkPrimer primer, Random random, IBlockState ilmeniteOre, IBlockState lunarStone) {
+    private void generateberylliumVeins(ChunkPrimer primer, Random random, IBlockState berylliumOre, IBlockState lunarStone) {
         // Chunk başına kaç damar oluşturulacağını belirle - sayıyı azalt
         int veinsPerChunk = 5 + random.nextInt(10); // 2-3 damar (önceki 3-5)
 
         for (int vein = 0; vein < veinsPerChunk; vein++) {
-            if (random.nextDouble() < ILMENITE_VEIN_CHANCE) {
+            if (random.nextDouble() < beryllium_VEIN_CHANCE) {
                 // Damar başlangıç konumu
                 int startX = random.nextInt(16);
                 int startZ = random.nextInt(16);
@@ -411,9 +411,9 @@ public class NetherGenMixin {
 
                         try {
                             IBlockState currentBlock = primer.getBlockState(blockX, blockY, blockZ);
-                            // Sadece LunarStone'u İlmenite ile değiştir
+                            // Sadece LunarStone'u beryllium ile değiştir
                             if (currentBlock.getBlock() == ModBlocks.lunarStone) {
-                                primer.setBlockState(blockX, blockY, blockZ, ilmeniteOre);
+                                primer.setBlockState(blockX, blockY, blockZ, berylliumOre);
 
                                 // Küçük bir küme oluştur (aynı noktada birkaç blok) - küme boyutunu azalt
                                 for (int dx = -1; dx <= 1; dx++) {
@@ -437,7 +437,7 @@ public class NetherGenMixin {
                                                     try {
                                                         IBlockState neighborBlock = primer.getBlockState(nx, ny, nz);
                                                         if (neighborBlock.getBlock() == ModBlocks.lunarStone) {
-                                                            primer.setBlockState(nx, ny, nz, ilmeniteOre);
+                                                            primer.setBlockState(nx, ny, nz, berylliumOre);
                                                         }
                                                     } catch (IndexOutOfBoundsException e) {
                                                         // Sınır hatası olursa atla
